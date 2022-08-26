@@ -19,6 +19,7 @@ module.exports = {
         new MiniCssExtractPlugin()
     ],
     resolve: {
-        extensions: [".ts", ".tsx", ".js", ".scss"]
+        extensions: [".ts", ".tsx", ".js", ".scss", ".ccs"]
     },
+    stats: "minimal"
 }

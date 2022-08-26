@@ -4,23 +4,24 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 module.exports = merge(common, {
     mode: "production",
+    devtool: "inline-source-map",
     module: {
         rules: [
             {
                 test: /\.module\.s([ac])ss$/,
-                loader: [
-                    MiniCssExtractPlugin.loader,
+                use: [
+                    'style-loader',
                     {
                         loader: 'css-loader',
                         options: {
                             modules: true,
-                            sourceMap: false
+                            sourceMap: true
                         }
                     },
                     {
                         loader: 'sass-loader',
                         options: {
-                            sourceMap: false
+                            sourceMap: true
                         }
                     }
                 ]
@@ -28,17 +29,36 @@ module.exports = merge(common, {
             {
                 test: /\.s([ac])ss$/,
                 exclude: /\.module.(s([ac])ss)$/,
-                loader: [
-                    MiniCssExtractPlugin.loader,
+                use: [
+                    'style-loader',
                     'css-loader',
                     {
                         loader: 'sass-loader',
                         options: {
-                            sourceMap: false
+                            sourceMap: true
                         }
                     }
                 ]
-            }
+            },
+            {
+                test: /\.css$/,
+                use: [MiniCssExtractPlugin.loader, "css-loader"],
+            },
+            {
+                test: /\.?(js(x))$/,
+                exclude: /node_modules/,
+                use: {
+                    loader: "babel-loader",
+                    options: {
+                        presets: ['@babel/preset-env', '@babel/preset-react']
+                    }
+                }
+            },
+            {
+                test: /\.ts(x)?$/,
+                use: ['babel-loader', 'ts-loader'],
+                exclude: /node_modules/,
+            },
         ]
     },
     plugins: [
