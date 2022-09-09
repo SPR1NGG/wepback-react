@@ -64,12 +64,17 @@ module.exports = merge(common, {
                     ]
                 },
                 {
-                    test: /\.(png|jp(e*)g|svg|gif)$/,
+                    test: /\.(png|jp(e*)g|gif)$/,
                     use: ['file-loader'],
                 },
                 {
                     test: /\.svg$/,
-                    use: ['@svgr/webpack'],
+                    loader: "@svgr/webpack",
+                    issuer: /\.[jt]sx?$/,
+                    options: {
+                        typescript: true,
+                        ext: "tsx",
+                    }
                 },
                 {
                     test: /\.?(js(x))$/,
@@ -90,8 +95,6 @@ module.exports = merge(common, {
         },
         optimization: {
             minimizer: [
-                // For webpack@5 you can use the `...` syntax to extend existing minimizers (i.e. `terser-webpack-plugin`), uncomment the next line
-                // `...`,
                 new CssMinimizerPlugin(),
             ],
         },
